@@ -1,0 +1,6 @@
+npm install bootstrap-vue bootstrap --save           -    https://www.techiediaries.com/vue-bootstrap/
+Vue.use(BootstrapVue)
+
+https://bootstrap-vue.org/
+-----------
+

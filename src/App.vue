@@ -1,12 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="container-fluid">
+      <MainNavbar />
     </div>
+    
     <router-view/>
   </div>
 </template>
+
+<script>
+import MainNavbar from './components/common/MainNavbar'
+
+export default {
+  name: 'app',
+  components: {
+    MainNavbar
+  }
+}
+</script>
 
 <style>
 #app {
