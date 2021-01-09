@@ -1,19 +1,23 @@
 <template>
   <div>
     <p v-if="!allApis.length" >Нет доступных API!</p>
-    <ul v-else :key="allApis.length" >
-      <li v-for="api in allApis" :key="api.id" >
-        <p>{{ api.name }}</p>
-      </li>
-    </ul>
+    <ApiList
+      v-else
+      :key="allApis.length"
+      v-bind:apis="allApis"
+     />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import ApiList from '../components/Apis/ApiList'
 
 export default {
   name: 'Home',
-  computed: mapGetters(['allApis'])
+  computed: mapGetters(['allApis']),
+  components: {
+    ApiList
+  }
 }
 </script>

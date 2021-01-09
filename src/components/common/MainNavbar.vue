@@ -13,12 +13,12 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Поиск"></b-form-input>
+        <b-nav-form @click.prevent="onSearch" >
+          <b-form-input size="sm" class="mr-sm-2" placeholder="Поиск" v-model.trim="filterValue" ></b-form-input>
           <b-button size="sm" class="my-2 my-sm-0" type="submit">Найти</b-button>
         </b-nav-form>
 
-        <b-nav-item-dropdown text="Lang" right>
+        <b-nav-item-dropdown text="Язык" right>
             <b-dropdown-item href="#">RU</b-dropdown-item>
           <b-dropdown-item href="#">EN</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -37,6 +37,27 @@
 </div>
 </template>
 
+<script>
+export default {
+    name: 'MainNavBar',
+    data: () => ({
+        filterValue: ''
+    }),
+    methods: {
+        onSearch() {
+            if (this.filterValue) {
+                this.$store.commit('addMainPageFilter', this.filterValue)
+
+                //this.$router.push('/')
+
+                this.filterValue = ''
+                this.$store.commit('addMainPageFilter', '')
+            }
+        }
+    }    
+}
+
+</script>
 <style scoped>
     .no-decor {
     text-decoration: none;
