@@ -2,9 +2,8 @@
   <div id="app">
     <div class="container-fluid">
       <MainNavbar />
+      <router-view/>
     </div>
-    
-    <router-view/>
   </div>
 </template>
 
