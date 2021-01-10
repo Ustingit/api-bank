@@ -22,6 +22,11 @@ const routes = [
     path: '/addApi',
     name: 'AddAPI',
     component: () => import('../views/AddApi.vue')
+  },
+  {
+    path: '/details/:id',
+    name: 'ApiDetail',
+    component: () => import('../views/ApiDetail.vue')
   }
 ]
 

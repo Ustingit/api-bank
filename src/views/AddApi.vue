@@ -1,4 +1,5 @@
 <template>
+  <div class="row">
     <div>
     <b-form @submit.prevent="onSubmit" @reset.prevent="clearForm">
       <b-form-group
@@ -52,8 +53,8 @@
       <b-button type="submit" variant="primary">Добавить</b-button>
       <b-button type="reset" variant="danger">Очистить</b-button>
     </b-form>
+    </div>
   </div>
-
 </template>
 
 <script>

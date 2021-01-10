@@ -14,7 +14,8 @@
         :key="api.id"
       >
         <b-card-text>{{ api.description }}</b-card-text>
-      </b-card>
+        <b-button @click="$router.push(`/details/${api.id}`)" >Детали</b-button>
+      </b-card> 
 
     </b-card-group>
   </div>
