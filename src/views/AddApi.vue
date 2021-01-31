@@ -39,7 +39,7 @@
         <b-form-group
         v-if="!isFree"
         id="input-group-5"
-        label="Стоимость доступа к API:"
+        label="Стоимость доступа к API, $:"
         label-for="input-5"
       >
         <b-form-input
@@ -48,6 +48,60 @@
           type="text"
           required
         ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        v-if="!isFree"
+        id="input-group-6"
+        label="Стоимость абонентской платы в месяц (если такая имеется), $:"
+        label-for="input-6"
+      >
+        <b-form-input
+          id="input-6"
+          v-model.number="monthlyCost"
+          type="text"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-7" 
+          label="Дополнительно:" 
+          label-for="input-7"
+          description="Часто для доступа к API необходимо написать разботчикам, получить приватный ключ или зарегистрироваться через UI сервиса. Если в вашем случае необходимы некие дополнительные действия - опишите их здесь."
+        >
+        <b-form-textarea
+          id="input-7"
+          rows="4"
+          v-model.trim="additionalAccessRules"
+          placeholder="Введите дополнительное описание"
+        ></b-form-textarea>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-8"
+        label="Лицензия под которой распространяется ваше API:"
+        label-for="input-8"
+      >
+        <b-form-input
+          id="input-8"
+          v-model.trim="license"
+          type="text"
+          placeholder="Введите название лицензии"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-9" 
+          label="Способ добавления методов вашего API:" 
+          label-for="dropdown-9"
+          >
+        <b-form-select id="dropdown-9" right 
+            text="Выберите подходящий вам вариант" 
+            class="m-md-2"
+            v-model="addMethodsOption"
+            :options="addMethodsOptions"
+            >
+        </b-form-select>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Добавить</b-button>
@@ -64,7 +118,14 @@ export default {
         name: '',
         isFree: true,
         cost: 0,
-        description: ''
+        monthlyCost: 0,
+        description: '',
+        additionalAccessRules: '',
+        license: '',
+        addMethodsOption: "handy",
+        addMethodsOptions: [{ value: "handy", text: "Вручную" },
+                            { value: "wsdl", text: "Автоматически через загрузку WSDL схемы" },
+                            { value: "openapi", text: "Автоматически через закрзку схемы Openapi" }]
     }),
     methods: {
         async onSubmit(){
@@ -72,7 +133,10 @@ export default {
                 name: this.name,
                 isFree: this.isFree,
                 cost: this.cost,
-                description: this.description
+                description: this.description,
+                monthlyCost: this.monthlyCost,
+                additionalAccessRules: this.additionalAccessRules,
+                license: this.license
             })
             
             this.clearForm()
@@ -83,6 +147,9 @@ export default {
             this.isFree = true
             this.cost = 0
             this.description = ''
+            this.monthlyCost = '',
+            this.additionalAccessRules = '',
+            this.license = ''
         }
     }
 }
