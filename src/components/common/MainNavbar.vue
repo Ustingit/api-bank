@@ -46,12 +46,7 @@ export default {
     methods: {
         onSearch() {
             if (this.filterValue) {
-                this.$store.commit('addMainPageFilter', this.filterValue)
-
-                //this.$router.push('/')
-
-                this.filterValue = ''
-                this.$store.commit('addMainPageFilter', '')
+                this.$router.push('/' + '?filter=' + this.filterValue)
             }
         }
     }    

@@ -8,15 +8,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     allApis: [],
-    queryForMainPage: null
+    lastSuccessfullFilter: ''
   },
   mutations: {
     addApi(state, newApiItem) {
       state.allApis.push(newApiItem)
     },
-    addMainPageFilter(state, query) {
-      console.log('in mutation, current val = ', state.queryForMainPage, ' , next = ', query)
-      state.queryForMainPage = query
+    saveLastSucceedFilter(state, filter) {
+      state.lastSuccessfullFilter = filter
     }
   },
   actions: {
@@ -29,13 +28,7 @@ export default new Vuex.Store({
   },
   getters: {
     allApis(state) {
-      if (!state.queryForMainPage) {
-        return state.allApis
-      }
-      
-      return state.allApis.filter(x => x.name === state.queryForMainPage 
-        || x.description === state.queryForMainPage 
-        || x.methodTitles.contains(state.queryForMainPage))
+      return state.allApis
     }
   }
 })
