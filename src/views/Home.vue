@@ -19,6 +19,9 @@ export default {
   data: () => ({
     filter: ''
   }),
+  async mounted(){
+    await this.$store.dispatch('fetchApis', 1);
+  },
   computed: {
     ...mapGetters(['allApis']),
     allApisManaged: function() {
