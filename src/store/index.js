@@ -5,8 +5,6 @@ import UserStore from './user'
 
 Vue.use(Vuex)
 
-// api example  { id: 1, name: '', description: '', methodTitles: [], methods: [] }
-
 const apiUrl = 'https://localhost:44363/ExternalApi/';
 
 export default new Vuex.Store({
@@ -23,6 +21,10 @@ export default new Vuex.Store({
     },
     setApis(state, apis) {
       state.allApis = apis;
+    },
+    deleteApi(state, id) {
+      console.log('in delete mutation');
+      state.allApis = state.allApis.filter(x => x.id !== id);
     }
   },
   actions: {
@@ -31,15 +33,24 @@ export default new Vuex.Store({
       commit('addApi', api)
     },
     async fetchApis({commit}, page, size = 10){
-      var apis = fetch(apiUrl + `GetApis?page=${page}&size=${size}`).then(response => {
+      fetch(apiUrl + `GetApis?page=${page}&size=${size}`).then(response => {
         if (response.status === 200) {
           response.json().then(json => {
             if (json.succeed) {
-              console.log(json.data);
               commit('setApis', json.data);
             }
           })
         }
+      })
+    },
+    async deleteApi({commit}, id) {
+      await axios.delete(apiUrl + `Delete?id=${id}`).then(response => {
+        if (response.status === 200) {
+          console.log(response);
+          if (response.data.succeed) {
+            commit('deleteApi', id);
+          }
+        } 
       })
     }
   },
@@ -49,6 +60,9 @@ export default new Vuex.Store({
   getters: {
     allApis(state) {
       return state.allApis
+    },
+    getApiById: (state) => (id) => {
+      return state.allApis.find(api => api.id === id)
     }
   }
 })
