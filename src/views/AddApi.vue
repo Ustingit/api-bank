@@ -28,16 +28,15 @@
 
       <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
         <b-form-checkbox-group
-          v-model="isFree"
           id="checkboxes-4"
           :aria-describedby="ariaDescribedby"
         >
-            <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0">API Бесплатно</b-form-checkbox>
+            <b-form-checkbox v-model="isFree" :value="true" class="mb-2 mr-sm-2 mb-sm-0">API Бесплатно</b-form-checkbox>
         </b-form-checkbox-group>
       </b-form-group>
 
         <b-form-group
-        v-if="!isFree"
+        v-if="!isFreeApi"
         id="input-group-5"
         label="Стоимость доступа к API, $:"
         label-for="input-5"
@@ -51,7 +50,7 @@
       </b-form-group>
 
       <b-form-group
-        v-if="!isFree"
+        v-if="!isFreeApi"
         id="input-group-6"
         label="Стоимость абонентской платы в месяц (если такая имеется), $:"
         label-for="input-6"
@@ -114,9 +113,14 @@
 <script>
 export default {
     name: 'addAPI',
+    computed: {
+      isFreeApi() {
+        return this.isFree === true || (this.isFree.length > 0 && this.isFree[0] === true)
+      }
+    },
     data: () => ({
         name: '',
-        isFree: true,
+        isFree: false,
         cost: 0,
         monthlyCost: 0,
         description: '',
@@ -131,7 +135,7 @@ export default {
         async onSubmit(){
             await this.$store.dispatch('addApi', {
                 name: this.name,
-                isFree: this.isFree,
+                isFree: this.isFree === false || this.isFree.length === 0 ? false : true,
                 cost: this.cost,
                 description: this.description,
                 monthlyCost: this.monthlyCost,
@@ -144,7 +148,7 @@ export default {
         },
         clearForm() {
             this.name = ''
-            this.isFree = true
+            this.isFree = false
             this.cost = 0
             this.description = ''
             this.monthlyCost = '',

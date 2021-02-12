@@ -29,8 +29,23 @@ export default new Vuex.Store({
   },
   actions: {
     async addApi({commit}, api) {
-      api.id = new Date().toJSON();
-      commit('addApi', api)
+      fetch(apiUrl + 'Create', {
+        method: 'POST',
+        body: JSON.stringify(api),
+        headers: {
+          "Accept": "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        }
+      }).then(response => {
+        if (response.status === 200) {
+          console.log(response);
+          response.json().then(json => {
+            if (json.succeed) {
+              commit('addApi', api)
+            }
+          })
+        } 
+      })
     },
     async fetchApis({commit}, page, size = 10){
       fetch(apiUrl + `GetApis?page=${page}&size=${size}`).then(response => {
