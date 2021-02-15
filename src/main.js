@@ -6,9 +6,11 @@ import store from './store'
 import BootstrapVue from "bootstrap-vue"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
+import shortener from './filters/shortener.filter';
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
+Vue.filter('shortener', shortener)
 
 new Vue({
   router,
