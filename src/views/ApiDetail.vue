@@ -8,13 +8,11 @@
 </template>
 
 <script>
-import Loader from '../components/common/Loaders/Loader.vue';
+import Loader from '../components/common/Loaders/Loader'
 
 export default {
     name: 'Details',
-    components: {
-        Loader
-    },
+    components: { Loader },
     data: () => ({
         loading: true,
         api: null
@@ -24,8 +22,8 @@ export default {
         this.loading = false;
     },
     methods: {
-        deleteItem() {
-            this.$store.dispatch('deleteApi', this.api.id);
+        async deleteItem() {
+            await this.$store.dispatch('deleteApi', this.api.id);
             this.$router.push("/");
         }
     }

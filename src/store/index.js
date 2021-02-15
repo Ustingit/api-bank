@@ -23,13 +23,12 @@ export default new Vuex.Store({
       state.allApis = apis;
     },
     deleteApi(state, id) {
-      console.log('in delete mutation');
       state.allApis = state.allApis.filter(x => x.id !== id);
     }
   },
   actions: {
     async addApi({commit}, api) {
-      fetch(apiUrl + 'Create', {
+      await fetch(apiUrl + 'Create', {
         method: 'POST',
         body: JSON.stringify(api),
         headers: {
@@ -38,7 +37,6 @@ export default new Vuex.Store({
         }
       }).then(response => {
         if (response.status === 200) {
-          console.log(response);
           response.json().then(json => {
             if (json.succeed) {
               commit('addApi', api)
@@ -61,7 +59,6 @@ export default new Vuex.Store({
     async deleteApi({commit}, id) {
       await axios.delete(apiUrl + `Delete?id=${id}`).then(response => {
         if (response.status === 200) {
-          console.log(response);
           if (response.data.succeed) {
             commit('deleteApi', id);
           }

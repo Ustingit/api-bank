@@ -28,7 +28,13 @@ export default {
     props: ['apis'],
     methods: {
         getApiCost(api) {
-            return !api.isFree ? `${api.cost} $` : 'free';
+            return api.isFree 
+                    ? 'free' 
+                    : api.accessCost 
+                      ? `${api.accessCost} $` 
+                      : api.monthlyCost 
+                        ? `${api.monthlyCost} $ monthly` 
+                        : 'free';
         }
     }
 }

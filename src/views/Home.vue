@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <Loader v-if="loading" />
+  <div v-else >
     <p v-if="!filter && !allApisManaged.length" >Нет доступных API!</p>
     <p v-else-if="filter && !allApisManaged.length" >Нет доступных API по фильтру "{{ filter }}"" !</p>
     <ApiList
@@ -13,14 +14,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import ApiList from '../components/Apis/ApiList'
+import Loader from '../components/common/Loaders/Loader'
 
 export default {
   name: 'Home',
   data: () => ({
-    filter: ''
+    filter: '',
+    loading: true
   }),
   async mounted(){
     await this.$store.dispatch('fetchApis', 1);
+    this.loading = false;
   },
   computed: {
     ...mapGetters(['allApis']),
@@ -42,7 +46,7 @@ export default {
     }
   },
   components: {
-    ApiList
+    ApiList, Loader
   }
 }
 </script>

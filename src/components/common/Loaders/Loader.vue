@@ -1,20 +1,10 @@
 <template>
-    <div class="app-loader">
-        <div class="preloader-wrapper active">
-    <div :class="color" class="spinner-layer" > 
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div><div class="gap-patch">
-        <div class="circle"></div>
-      </div><div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-    </div>
-  </div>
-    </div>
+    <OrbitalsLoader />
 </template>
 
 <script>
+import { OrbitalsLoader } from 'vue-spinners-css';
+
 export default {
     computed: {
         color() {
@@ -22,6 +12,9 @@ export default {
 
          return colors[Math.floor(Math.random() * 3)];
         }
+    },
+    components: {
+      OrbitalsLoader
     }
 }
 </script>

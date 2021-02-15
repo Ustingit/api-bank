@@ -121,7 +121,7 @@ export default {
     data: () => ({
         name: '',
         isFree: false,
-        cost: 0,
+        cost: 1,
         monthlyCost: 0,
         description: '',
         additionalAccessRules: '',
