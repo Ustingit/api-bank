@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import SearchResult from '../views/SearchResult.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/details/:id',
     name: 'ApiDetail',
     component: () => import('../views/ApiDetail.vue')
+  },
+  {
+    path: '/search/:filter',
+    name: 'SearchResult',
+    component: () => import('../views/SearchResult.vue')
   }
 ]
 

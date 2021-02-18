@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios';
 import UserStore from './user'
+import PaginationStore from './pagination'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ const apiUrl = 'https://localhost:44363/ExternalApi/';
 export default new Vuex.Store({
   state: {
     allApis: [],
-    lastSuccessfullFilter: ''
+    lastSuccessfullFilter: '',
+    currentFilter: null
   },
   mutations: {
     addApi(state, newApiItem) {
@@ -45,12 +47,13 @@ export default new Vuex.Store({
         } 
       })
     },
-    async fetchApis({commit}, page, size = 10){
-      fetch(apiUrl + `GetApis?page=${page}&size=${size}`).then(response => {
+    async fetchApis({commit}, urlData){
+      fetch(apiUrl + getFetchingUrlByData(urlData)).then(response => {
         if (response.status === 200) {
           response.json().then(json => {
             if (json.succeed) {
-              commit('setApis', json.data);
+              commit('setApis', json.data.items);
+              commit('setPaginationInfo', json.data)
             }
           })
         }
@@ -67,7 +70,7 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    UserStore
+    UserStore, PaginationStore
   },
   getters: {
     allApis(state) {
@@ -75,6 +78,21 @@ export default new Vuex.Store({
     },
     getApiById: (state) => (id) => {
       return state.allApis.find(api => api.id === id)
+    },
+    hasNoItemsAndFilterIsEmpty(state) {
+      return !state.currentFilter && !state.allApis.length
+    },
+    hasNoItemsForFilter(state) {
+      return state.currentFilter && !state.allApis.length
+    },
+    currentFilter(state) {
+      return state.currentFilter ?? null
     }
   }
 })
+
+var getFetchingUrlByData = function(urlData) {
+  return urlData.filter 
+          ? `GetApis?page=${urlData.page}&size=${urlData.perPage}&filter=${urlData.filter}` 
+          : `GetApis?page=${urlData.page}&size=${urlData.perPage}`; 
+}

@@ -1,14 +1,6 @@
 <template>
   <Loader v-if="loading" />
-  <div v-else >
-    <p v-if="!filter && !allApisManaged.length" >Нет доступных API!</p>
-    <p v-else-if="filter && !allApisManaged.length" >Нет доступных API по фильтру "{{ filter }}"" !</p>
-    <ApiList
-      v-else
-      :key="allApisManaged.length"
-      v-bind:apis="allApisManaged"
-     />
-  </div>
+  <ApiList v-else />
 </template>
 
 <script>
@@ -23,27 +15,12 @@ export default {
     loading: true
   }),
   async mounted(){
-    await this.$store.dispatch('fetchApis', 1);
+    var filterValue = this.$route.query.filter ?? null;
+    await this.$store.dispatch('fetchApis', { page: 1, perPage: this.countOfItemsOnPage, filter: filterValue });
     this.loading = false;
   },
   computed: {
-    ...mapGetters(['allApis']),
-    allApisManaged: function() {
-      var filterValue = this.$route.query.filter;
-
-      if (!filterValue) {
-        this.filter = ''
-        return this.allApis;
-      }
-
-      this.filter = filterValue;
-      var filteredResult = this.allApis.filter(x => x.name.includes(filterValue)  || x.description.includes(filterValue));
-      if (filteredResult.length > 0) {
-        this.$store.commit('saveLastSucceedFilter', filterValue);       
-      }
-      
-      return filteredResult;
-    }
+    ...mapGetters(['countOfItemsOnPage'])
   },
   components: {
     ApiList, Loader

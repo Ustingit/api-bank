@@ -1,6 +1,8 @@
 <template>
-<div class="container-fluid">
-  <div v-for="(rowApis, index) in groupedApis" :key="index" class="row">
+<p v-if="hasNoItemsAndFilterIsEmpty" >Нет доступных API!</p>
+<p v-else-if="hasNoItemsForFilter" >Нет доступных API по фильтру "{{ currentFilter }}"" !</p>
+<div class="container-fluid" v-else >
+  <div v-for="(rowApis, index) in apis" :key="index" class="row" id="api-grid" >
     <b-card-group deck class="mt-3">
     <b-card
         border-variant="secondary"
@@ -18,15 +20,32 @@
       </b-card> 
     </b-card-group>
   </div>
+  <b-pagination
+      class="mt-3"
+      align="center"
+      v-model="pageNumber"
+      :total-rows="totalCount"
+      :per-page="countOfItemsOnPage"
+      aria-controls="api-grid"
+      @input="handlePaginationChange"
+    ></b-pagination>
   </div>
 </template>
 
 <script>
 import _ from 'lodash';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'ApiList',
-    props: ['apis'],
+    data: () => ({
+      pageNumber: 1,
+      apis: []
+    }),
+    mounted() {
+      this.pageNumber = this.$store.getters.currentPage;
+      this.apis = this.getGroupedApis(this.allApis);
+    },
     methods: {
         getApiCost(api) {
             return api.isFree 
@@ -36,11 +55,22 @@ export default {
                       : api.monthlyCost 
                         ? `${api.monthlyCost} $ monthly` 
                         : 'free';
+        },
+        async handlePaginationChange(newPageNumber) {
+          await this.$store.dispatch('fetchApis', { page: newPageNumber, perPage: this.countOfItemsOnPage, filter: this.currentFilter })
+          this.pageNumber = newPageNumber;
+        },
+        getGroupedApis(apis) {
+          return _.chunk(apis, 3);
         }
     },
     computed: {
-      groupedApis() {
-        return _.chunk(this.apis, 3);
+      ...mapGetters(['countOfItemsOnPage', 'totalCount', 'hasNoItemsAndFilterIsEmpty', 'hasNoItemsForFilter', 'currentFilter']),
+      ...mapState(['allApis'])
+    },
+    watch: {
+      allApis(newValue, oldValue) {
+        this.apis = this.getGroupedApis(newValue)
       }
     }
 }

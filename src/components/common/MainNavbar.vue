@@ -44,9 +44,13 @@ export default {
         filterValue: ''
     }),
     methods: {
-        onSearch() {
+        async onSearch() {
             if (this.filterValue) {
-                this.$router.push('/' + '?filter=' + this.filterValue)
+                this.$router.push({
+                  path: '/search/' + this.filterValue,
+                  query: {
+                    time: new Date().getTime(), //little approach to track changes due to https://stackoverflow.com/a/62125496/6935910
+                  }});
             }
         }
     }    
