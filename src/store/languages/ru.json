@@ -1,0 +1,17 @@
+{
+    "ProfileTitle": "Профиль",
+    "Name": "Имя",
+    "Refresh": "Обновить",
+    "Find": "Найти",
+    "MainTitle": "API-Банк",
+    "AddAPI": "Добавить API",
+    "About": "О нас",
+    "Search": "Поиск",
+    "User": "Пользователь",
+    "LogOutLong": "Выйти из системы" ,
+    "Goal": "Цель",
+    "Creator": "Создатель",
+    "or": "или",
+    "CreatorFullName": "Юрий Устинович",
+    "MainShortGoal": "Наша цель - это сбор всех API мира в одном месте."
+}

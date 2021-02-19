@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios';
 import UserStore from './user'
 import PaginationStore from './pagination'
+import SettingsStore from './settings'
 
 Vue.use(Vuex)
 
@@ -70,7 +71,7 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    UserStore, PaginationStore
+    UserStore, PaginationStore, SettingsStore
   },
   getters: {
     allApis(state) {
